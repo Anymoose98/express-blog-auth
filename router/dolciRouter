@@ -1,0 +1,22 @@
+const express = require("express");
+const router = express.Router();
+const  authenticateToken  = require("../middlewares/jwtToken.js")
+const dolciController = require("../controllers/dolci.js")
+const multer = require("multer");
+const uploader = multer({ dest: "public" });
+const dolceSlugExists = require('../middlewares/dolceSlugExists.js');
+
+router.use(authenticateToken.authenticateWithJWT);
+// mostro tutti
+router.get("/", dolciController.index);
+
+// Mostro uno al dettaglio
+router.get("/:slug", dolciController.show);
+
+// Router.post("/", dolciController.store);
+
+router.delete("/:slug", dolceSlugExists, dolciController.destroy);
+
+module.exports = router;
+
+
